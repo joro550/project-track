@@ -1,6 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Project.Track.Persistence
+namespace Project.Track.Persistence.Options
 {
     public abstract record ClientOptions
     {

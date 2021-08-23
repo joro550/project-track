@@ -1,43 +1,46 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
+using Project.Track.Persistence;
+using Project.Track.Persistence.Entities;
+using Project.Track.Server.Solutions.Commands;
+using Project.Track.Server.Solutions.Models;
 
 namespace Project.Track.Server.Solutions
 {
+    [ApiController]
     [Route("api/v1/solutions")]
     public class SolutionController : ControllerBase
     {
-        private readonly List<Solution> _solutions = new()
+        private readonly IMediator _mediator;
+        private readonly IRepository<SolutionEntity> _solutions;
+
+        public SolutionController(IRepository<SolutionEntity> solutions, IMediator mediator)
         {
-            new(1, "SkyRise"),
-            new(2, "SkyFall"),
-            new(3, "SkyLake"),
-            new(4, "OtherThing")
-        };
-        
-        [HttpGet]
-        public IActionResult GetAsync()
-        {
-            return Ok(_solutions);
+            _solutions = solutions;
+            _mediator = mediator;
         }
 
-        [HttpGet("{id:int}")]
-        public IActionResult GetAsync(int id)
+        [HttpGet]
+        public async Task<IActionResult> GetAsync() 
+            => Ok(await _solutions.GetAsync());
+
+        [HttpGet("{id:guid}")]
+        public async Task<IActionResult> GetAsync(Guid id)
         {
-            var solution = _solutions.FirstOrDefault(solution => solution.Id == id);
-            if (solution is null)
+            var solution = await _solutions.GetAsync(id);
+            if (!solution.Any())
                 return NotFound();
-            
-            return Ok(solution);
+            return Ok(solution.First());
         }
 
         [HttpPost]
-        public IActionResult CreateAsync(Solution solution)
+        public async Task<IActionResult> CreateAsync([FromBody]Solution solution)
         {
-            _solutions.Add(solution);
+            await _mediator.Send(new CreateSolution(solution));
             return Created($"/api/v1/solutions/{solution.Id}", solution);
         }
     }
-
-    public record Solution(int Id, string Name);
 }

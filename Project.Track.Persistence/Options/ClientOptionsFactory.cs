@@ -1,3 +1,5 @@
+using Project.Track.Persistence.Options;
+
 namespace Project.Track.Persistence
 {
     public class ClientOptionsFactory
