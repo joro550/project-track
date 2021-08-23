@@ -33,7 +33,12 @@ namespace Project.Track.Server.Branches
         [HttpPost]
         public async Task<IActionResult> CreateAsync([FromBody]Branch branch, Guid solutionId)
         {
-            await _branches.SaveAsync(branch.ToBranch());
+            var branches = await _branches.GetAsync();
+            var defaultBranch = branches.FirstOrDefault(entity => entity.IsDefault);
+            if (defaultBranch is null)
+                return StatusCode(500);
+
+            await _branches.SaveAsync(branch.ToBranch(defaultBranch.Id));
             return Created($"api/v1/solutions/{branch.Id}", branch);
         }
     }

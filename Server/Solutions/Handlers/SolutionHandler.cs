@@ -1,10 +1,8 @@
-﻿using System;
-using MediatR;
+﻿using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 using Project.Track.Persistence;
 using Project.Track.Persistence.Entities;
-using Project.Track.Server.Branches.Models;
 using Project.Track.Server.Branches.Commands;
 using Project.Track.Server.Solutions.Commands;
 
@@ -25,7 +23,7 @@ namespace Project.Track.Server.Solutions.Handlers
         public async Task<Unit> Handle(CreateSolution request, CancellationToken cancellationToken)
         {
             await _solutions.SaveAsync(request.Solution.ToEntity(), cancellationToken);
-            await _mediator.Send(new CreateBranch(new Branch(Guid.NewGuid(), request.Solution.Id, "main")), cancellationToken);
+            await _mediator.Send(CreateBranch.CreateDefaultBranch(request.Solution.Id), cancellationToken);
             return Unit.Value;
         }
     }

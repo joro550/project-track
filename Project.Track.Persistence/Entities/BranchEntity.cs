@@ -8,6 +8,10 @@ namespace Project.Track.Persistence.Entities
         public Guid SolutionId { get; set; }
         public string Name { get; set; }
         
+        public bool IsDefault { get; set; }
+        
+        public Guid? ParentBranch { get; set; }
+        
         public override string GetCollectionName(params string[] parameters)
         {
             var solutionId = parameters.First();

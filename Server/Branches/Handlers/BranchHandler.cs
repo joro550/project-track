@@ -17,7 +17,8 @@ namespace Project.Track.Server.Branches.Handlers
 
         public async Task<Unit> Handle(CreateBranch request, CancellationToken cancellationToken)
         {
-            await _branches.SaveAsync(request.Branch.ToBranch(), cancellationToken);
+            var branchEntity = request.Branch.ToBranch(request.ParentBranch, request.IsDefaultBranch);
+            await _branches.SaveAsync(branchEntity, cancellationToken);
             return Unit.Value;
         }
     }
