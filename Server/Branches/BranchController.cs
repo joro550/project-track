@@ -18,8 +18,11 @@ namespace Project.Track.Server.Branches
             => _branches = branches;
 
         [HttpGet]
-        public async Task<IActionResult> GetAsync(Guid solutionId) 
-            => Ok(await _branches.GetAsync());
+        public async Task<IActionResult> GetAsync(Guid solutionId)
+        {
+            var branchEntities = await _branches.GetAsync();
+            return Ok(branchEntities.Select(GetBranchModel.FromEntity));
+        }
 
         [HttpGet("id:guid")]
         public async Task<IActionResult> GetAsync(Guid id, Guid solutionId)
@@ -27,19 +30,33 @@ namespace Project.Track.Server.Branches
             var branch = await _branches.GetAsync(id, solutionId.ToString());
             if (!branch.Any())
                 return NotFound();
-            return Ok(branch.First());
+
+            var branchEntity = branch.First();
+            return Ok(GetBranchModel.FromEntity(branchEntity));
         }
         
         [HttpPost]
-        public async Task<IActionResult> CreateAsync([FromBody]Branch branch, Guid solutionId)
+        public async Task<IActionResult> CreateAsync([FromBody]BranchModel getBranchModel, Guid solutionId)
         {
             var branches = await _branches.GetAsync();
             var defaultBranch = branches.FirstOrDefault(entity => entity.IsDefault);
             if (defaultBranch is null)
                 return StatusCode(500);
 
-            await _branches.SaveAsync(branch.ToBranch(defaultBranch.Id));
-            return Created($"api/v1/solutions/{branch.Id}", branch);
+            var branchEntity = getBranchModel.ToBranch(defaultBranch.Id, solutionId);
+            var branchId = await _branches.SaveAsync(branchEntity);
+            return Created($"api/v1/solutions/{solutionId}/branches/{branchId}", branchId);
+        }
+        
+        [HttpDelete("id:guid")]
+        public async Task<IActionResult> CreateAsync(Guid solutionId, Guid id)
+        {
+            var branches = await _branches.GetAsync(id);
+            var defaultBranch = branches.FirstOrDefault(entity => entity.IsDefault);
+            if (defaultBranch is null)
+                return BadRequest("cannot_delete_default_branch");
+
+            return NoContent();
         }
     }
 }

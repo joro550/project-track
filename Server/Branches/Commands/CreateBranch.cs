@@ -4,23 +4,25 @@ using Project.Track.Server.Branches.Models;
 
 namespace Project.Track.Server.Branches.Commands
 {
-    public class CreateBranch : IRequest
+    public class CreateBranch : IRequest<Guid>
     {
-        public Branch Branch { get; }
+        public BranchModel GetBranchModel { get; }
         public Guid? ParentBranch { get; }
         public bool IsDefaultBranch { get; }
-        
-        public CreateBranch(Branch branch, Guid? parentBranch, bool isDefaultBranch = false)
+        public Guid SolutionId { get; }
+
+        private CreateBranch(BranchModel getBranchModel, Guid solutionId, Guid? parentBranch, bool isDefaultBranch = false)
         {
-            Branch = branch;
+            SolutionId = solutionId;
             ParentBranch = parentBranch;
+            GetBranchModel = getBranchModel;
             IsDefaultBranch = isDefaultBranch;
         }
 
         public static CreateBranch CreateDefaultBranch(Guid solutionId)
         {
-            var branch = new Branch(Guid.NewGuid(), solutionId, "main");
-            return new(branch, null, true);
+            var branch = new BranchModel("main");
+            return new(branch, solutionId, null, true);
         }
     }
 }

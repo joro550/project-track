@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.Extensions.Caching.Memory;
+using Project.Track.Persistence.Entities;
 
 namespace Project.Track.Persistence.Storage
 {
@@ -16,19 +17,23 @@ namespace Project.Track.Persistence.Storage
 
         public InMemoryStorage(IMemoryCache memoryCache) => _memoryCache = memoryCache;
 
-        public async Task SaveAsync(T model)
+        public async Task<Guid> SaveAsync(T model)
         {
             var persistentObjects = new Dictionary<string, T>();
 
             if (_memoryCache.TryGetValue(_typeName, out Dictionary<string, T> modelFromStore))
                 persistentObjects = modelFromStore;
             var collectionName = model.GetCollectionName();
-            if (persistentObjects.ContainsKey($"{collectionName}/{model.Id}"))
-                persistentObjects[$"{collectionName}/{model.Id}"] = model;
+            if (persistentObjects.ContainsKey($"{collectionName}/{model.Id.ToString()}"))
+                persistentObjects[$"{collectionName}/{model.Id.ToString()}"] = model;
             else
-                persistentObjects.Add($"{collectionName}/{model.Id}", model);
+            {
+                model.Id = Guid.NewGuid();
+                persistentObjects.Add($"{collectionName}/{model.Id.ToString()}", model);
+            }
 
             _memoryCache.Set(_typeName, persistentObjects);
+            return model.Id;
         }
 
         public async Task<List<T>> GetAsync()

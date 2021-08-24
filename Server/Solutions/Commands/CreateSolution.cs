@@ -1,13 +1,14 @@
-﻿using MediatR;
+﻿using System;
+using MediatR;
 using Project.Track.Server.Solutions.Models;
 
 namespace Project.Track.Server.Solutions.Commands
 {
-    public class CreateSolution : IRequest
+    public class CreateSolution : IRequest<Guid>
     {
-        public Solution Solution { get; }
+        public SolutionModel GetSolutionModel { get; }
 
-        public CreateSolution(Solution solution) 
-            => Solution = solution;
+        public CreateSolution(SolutionModel getSolutionModel) 
+            => GetSolutionModel = getSolutionModel;
     }
 }

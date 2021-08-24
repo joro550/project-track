@@ -1,6 +1,6 @@
 using System;
 
-namespace Project.Track.Persistence
+namespace Project.Track.Persistence.Entities
 {
     public abstract class PersistentObject : IPersistentObject
     {

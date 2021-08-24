@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using System;
+using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 using Project.Track.Persistence;
@@ -9,7 +10,7 @@ using Project.Track.Server.Solutions.Commands;
 namespace Project.Track.Server.Solutions.Handlers
 {
     public class SolutionHandler
-        : IRequestHandler<CreateSolution>
+        : IRequestHandler<CreateSolution, Guid>
     {
         private readonly IMediator _mediator;
         private readonly IRepository<SolutionEntity> _solutions;
@@ -20,11 +21,11 @@ namespace Project.Track.Server.Solutions.Handlers
             _solutions = solutions;
         }
         
-        public async Task<Unit> Handle(CreateSolution request, CancellationToken cancellationToken)
+        public async Task<Guid> Handle(CreateSolution request, CancellationToken cancellationToken)
         {
-            await _solutions.SaveAsync(request.Solution.ToEntity(), cancellationToken);
-            await _mediator.Send(CreateBranch.CreateDefaultBranch(request.Solution.Id), cancellationToken);
-            return Unit.Value;
+            var solutionId = await _solutions.SaveAsync(request.GetSolutionModel.ToEntity(), cancellationToken);
+            await _mediator.Send(CreateBranch.CreateDefaultBranch(solutionId), cancellationToken);
+            return solutionId;
         }
     }
 }

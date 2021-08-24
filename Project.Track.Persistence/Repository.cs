@@ -2,12 +2,14 @@
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Threading;
+using Project.Track.Persistence.Entities;
+using Project.Track.Persistence.Storage;
 
 namespace Project.Track.Persistence
 {
     public interface IRepository<T> where T : IPersistentObject
     {
-        Task SaveAsync(T model, CancellationToken cancellationToken = default);
+        Task<Guid> SaveAsync(T model, CancellationToken cancellationToken = default);
         Task<List<T>> GetAsync(Guid id, params string[] parameters);
         Task<List<T>> GetAsync(CancellationToken cancellationToken = default);
     }
@@ -19,7 +21,7 @@ namespace Project.Track.Persistence
         public Repository(IStorage<T> storage)
             => _storage = storage;
 
-        public async Task SaveAsync(T model, CancellationToken cancellationToken = default)
+        public async Task<Guid> SaveAsync(T model, CancellationToken cancellationToken = default)
             => await _storage.SaveAsync(model);
 
         public async Task<List<T>> GetAsync(Guid id, params string[] parameters) 
