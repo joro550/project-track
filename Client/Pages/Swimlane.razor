@@ -1,0 +1,44 @@
+﻿<div class="card">
+    <div class="card-header">
+        @Title
+    </div>
+    <div class="list-group">
+          
+        <a href="#" class="list-group-item list-group-item-action">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">A @Title item</h5>
+                <small>3 days ago</small>
+            </div>
+            <p class="mb-1">
+                <span class="badge bg-success rounded-pill">Epic1</span>
+            </p>
+        </a>
+          
+        <a href="#" class="list-group-item list-group-item-action">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">A second @Title item</h5>
+                <small>3 days ago</small>
+            </div>
+            <p class="mb-1">
+                <span class="badge bg-success rounded-pill">Epic1</span>
+            </p>
+        </a>
+          
+        <a href="#" class="list-group-item list-group-item-action">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">A third @Title item</h5>
+                <small>3 days ago</small>
+            </div>
+            <p class="mb-1">
+                <span class="badge bg-info rounded-pill">Epic2</span>
+            </p>
+        </a>
+    </div>
+</div>
+
+@code{
+
+    [Parameter]
+    public string Title { get; set; }
+
+}
