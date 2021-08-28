@@ -1,11 +1,11 @@
-﻿@page "/solutions/{SolutionId}/versions/create"
-@using Project.Track.Shared.Versions
+﻿@page "/solutions/{SolutionId}/cards/add"
+@using Project.Track.Shared.Cards
 @layout SolutionLayout
 
 @inject HttpClient _httpClient;
 @inject NavigationManager _navigationManager;
 
-<h3>Create versions</h3>
+<h3>Create Card</h3>
 <hr/>
 
 <EditForm Model="@_model" OnValidSubmit="@HandleValidSubmit" class='form'>
@@ -14,7 +14,12 @@
 
     <div class="mb-3">
         <label for="name" class="form-label">Name</label>
-        <InputText id="name" class="form-control" @bind-Value="_model.Name" />
+        <InputText id="name" class="form-control" @bind-Value="_model.Title" />
+    </div>
+    
+    <div class="mb-3">
+        <label for="name" class="form-label">Name</label>
+        <InputText id="name" class="form-control" @bind-Value="_model.Description" />
     </div>
 
     <button  class="btn btn-primary" type="submit">Submit</button>
@@ -24,11 +29,11 @@
     [Parameter]
     public string SolutionId { get; set; }
 
-    private readonly VersionModel _model = new();
+    private readonly CardModel _model = new();
     
     private async Task HandleValidSubmit()
     {
-        var response = await _httpClient.PostAsJsonAsync($"/api/v1/solutions/{SolutionId}/branches", _model);
+        var response = await _httpClient.PostAsJsonAsync($"/api/v1/solutions/{SolutionId}/cards", _model);
         if(response.IsSuccessStatusCode)
             _navigationManager.NavigateTo($"/solutions/{SolutionId}");
     }

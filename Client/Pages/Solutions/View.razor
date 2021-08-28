@@ -1,12 +1,16 @@
-﻿@page "/solutions/view/{SolutionId}"
+﻿@page "/solutions/{SolutionId}"
 @using Project.Track.Shared.Solutions
 @inject HttpClient _httpClient;
+@layout SolutionLayout
 
 <h3>Solution - @_solutionModel.Name</h3>
 <hr />
 
 <BranchList SolutionId='@SolutionId'/>
 <hr />
+
+<CardList SolutionId='@SolutionId'/>
+<hr/>
 
 <VersionList SolutionId='@SolutionId' />
 

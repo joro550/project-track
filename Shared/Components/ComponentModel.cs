@@ -6,5 +6,8 @@ namespace Project.Track.Shared.Components
     {
         [Required]
         public string Name { get; set; }
+        
+        [Required]
+        public string FeatureId { get; set; }
     }
 }

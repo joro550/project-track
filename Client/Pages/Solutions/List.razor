@@ -1,5 +1,6 @@
 ﻿@page "/solutions"
 @using Project.Track.Shared.Solutions
+@layout SolutionLayout
 
 @inject HttpClient _httpClient;
 
@@ -20,7 +21,7 @@
             {
                 <tr>
                     <td>@solution.Name</td>
-                    <td><a class='' href='/solutions/view/@solution.Id' >View</a></td>
+                    <td><a class='' href='/solutions/@solution.Id' >View</a></td>
                 </tr>
             }
         

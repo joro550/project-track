@@ -7,6 +7,7 @@ namespace Project.Track.Persistence.Entities
     {
         public string SolutionId { get; set; }
         public string Name { get; set; }
+        public string FeatureId { get; set; }
         
         public override string GetCollectionName(params string[] parameters)
         {
