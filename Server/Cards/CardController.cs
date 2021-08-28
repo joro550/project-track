@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Project.Track.Persistence;
 using Project.Track.Persistence.Entities;
 using Project.Track.Server.Cards.Models;
+using Project.Track.Shared.Cards;
 
 namespace Project.Track.Server.Cards
 {
@@ -22,7 +23,7 @@ namespace Project.Track.Server.Cards
         public async Task<IActionResult> GetAsync(string solutionId)
         {
             var cardEntities = await _cards.GetAsync(parameters: solutionId);
-            return Ok(cardEntities.Select(GetCardModel.FromEntity));
+            return Ok(cardEntities.Select(e => e.ToModel()));
         }
 
         [HttpGet("id")]
@@ -33,7 +34,7 @@ namespace Project.Track.Server.Cards
                 return NotFound();
 
             var card = cardEntities.First();
-            return Ok(GetCardModel.FromEntity(card));
+            return Ok(card.ToModel());
         }
         
         [HttpPost]

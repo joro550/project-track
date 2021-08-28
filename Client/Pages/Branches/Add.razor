@@ -1,9 +1,10 @@
-﻿@page "/solutions/add"
-@using Microsoft.AspNetCore.Components
-@using Project.Track.Shared.Solutions
+﻿@page "/solutions/{SolutionId}/branches/add"
+@using Project.Track.Shared.Branches
 
-@inject HttpClient _httpClient
-@inject NavigationManager _navManager
+@inject HttpClient _httpClient;
+@inject NavigationManager _navigationManager;
+
+<h3>Add Branch</h3>
 
 <EditForm Model="@_model" OnValidSubmit="@HandleValidSubmit" class='form'>
     <DataAnnotationsValidator />
@@ -19,13 +20,15 @@
 
 
 @code {
-    readonly SolutionModel _model = new();
+    [Parameter]
+    public string SolutionId { get; set; }
     
+    readonly BranchModel _model = new();
     
     private async Task HandleValidSubmit()
     {
-        var response = await _httpClient.PostAsJsonAsync("/api/v1/solutions", _model);
+        var response = await _httpClient.PostAsJsonAsync($"/api/v1/solutions/{SolutionId}/branches", _model);
         if(response.IsSuccessStatusCode)
-            _navManager.NavigateTo("/solutions");
+            _navigationManager.NavigateTo("/solutions");
     }
 }

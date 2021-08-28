@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Project.Track.Persistence;
 using Project.Track.Persistence.Entities;
 using Project.Track.Server.Components.Models;
+using Project.Track.Shared.Components;
 
 namespace Project.Track.Server.Components
 {
@@ -21,7 +22,7 @@ namespace Project.Track.Server.Components
         public async Task<IActionResult> GetAsync(string solutionId)
         {
             var componentEntities = await _components.GetAsync(parameters: solutionId);
-            return Ok(componentEntities.Select(GetComponentModel.FromEntity));
+            return Ok(componentEntities.Select(e => e.FromEntity()));
         }
         
         [HttpGet("id")]
@@ -32,7 +33,7 @@ namespace Project.Track.Server.Components
                 return NotFound();
 
             var card = componentEntities.First();
-            return Ok(GetComponentModel.FromEntity(card));
+            return Ok(card.FromEntity());
         }
         
         [HttpPost]

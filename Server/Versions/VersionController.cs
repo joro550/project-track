@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Project.Track.Persistence;
 using Project.Track.Persistence.Entities;
 using Project.Track.Server.Versions.Models;
+using Project.Track.Shared.Versions;
 
 namespace Project.Track.Server.Versions
 {
@@ -25,7 +26,7 @@ namespace Project.Track.Server.Versions
         public async Task<IActionResult> GetAsync(string solutionId)
         {
             var branchEntities = await _versions.GetAsync(parameters: solutionId);
-            return Ok(branchEntities.Select(GetVersionModel.FromEntity));
+            return Ok(branchEntities.Select(e => e.FromEntity()));
         }
         
         [HttpGet("id")]
@@ -36,7 +37,7 @@ namespace Project.Track.Server.Versions
                 return NotFound();
 
             var featureEntity = versions.First();
-            return Ok(GetVersionModel.FromEntity(featureEntity));
+            return Ok(featureEntity.FromEntity());
         }
         
         [HttpPost]

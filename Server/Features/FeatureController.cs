@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Project.Track.Persistence;
 using Project.Track.Persistence.Entities;
 using Project.Track.Server.Features.Models;
+using Project.Track.Shared.Features;
 
 namespace Project.Track.Server.Features
 {
@@ -21,7 +22,7 @@ namespace Project.Track.Server.Features
         public async Task<IActionResult> GetAsync(string solutionId)
         {
             var branchEntities = await _features.GetAsync(parameters: solutionId);
-            return Ok(branchEntities.Select(GetFeatureModel.FromEntity));
+            return Ok(branchEntities.Select(e  => e.FromEntity()));
         }
         
         [HttpGet("id")]
@@ -32,7 +33,7 @@ namespace Project.Track.Server.Features
                 return NotFound();
 
             var featureEntity = features.First();
-            return Ok(GetFeatureModel.FromEntity(featureEntity));
+            return Ok(featureEntity.FromEntity());
         }
         
         [HttpPost]

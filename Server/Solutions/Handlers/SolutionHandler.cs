@@ -1,11 +1,11 @@
-﻿using System;
-using MediatR;
+﻿using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 using Project.Track.Persistence;
 using Project.Track.Persistence.Entities;
 using Project.Track.Server.Branches.Commands;
 using Project.Track.Server.Solutions.Commands;
+using Project.Track.Server.Solutions.Extensions;
 
 namespace Project.Track.Server.Solutions.Handlers
 {

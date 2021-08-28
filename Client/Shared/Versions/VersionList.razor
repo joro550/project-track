@@ -1,0 +1,37 @@
+﻿@using Project.Track.Shared.Versions
+
+@inject HttpClient _httpClient;
+
+<h4>Versions</h4>
+@if (_versions.Any())
+{
+    <table class='table'>
+        <thead>
+            <tr>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var version in _versions)
+            {
+                <tr>
+                    <td>@version.Name</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div>No versions to display currently</div>
+}
+
+@code {
+    [Parameter]
+    public string SolutionId { get; set; }
+
+    private List<GetVersionModel> _versions = new();
+
+    protected override async Task OnInitializedAsync()
+        => _versions = await _httpClient.GetFromJsonAsync<List<GetVersionModel>>($"/api/v1/solutions/{SolutionId}/versions");
+}

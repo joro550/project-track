@@ -1,0 +1,51 @@
+﻿@using Project.Track.Shared.Branches
+
+@inject HttpClient _httpClient;
+
+<h4>Branches</h4>
+<a class='btn btn-primary'>Add Branch</a>
+
+@if (_branches.Any())
+{
+    <table class='table'>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        
+        <tbody>
+        @foreach (var branch in _branches)
+        {
+            <tr>
+                <td>@branch.Name</td>
+                @if (!branch.IsDefaultBranch)
+                {
+                    <td>
+                        <a class='btn btn-danger'>Merge</a>
+                    </td>
+                }
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+else
+{
+    <div>No Branches to display currently</div>
+}
+
+
+@code {
+    
+    [Parameter]
+    public string SolutionId { get; set; }
+    
+    List<GetBranchModel> _branches = 
+        new();
+
+    protected override async Task OnInitializedAsync()
+        => _branches = await _httpClient.GetFromJsonAsync<List<GetBranchModel>>($"/api/v1/solutions/{SolutionId}/branches");
+
+}

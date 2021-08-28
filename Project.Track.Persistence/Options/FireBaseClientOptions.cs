@@ -13,7 +13,7 @@ namespace Project.Track.Persistence.Options
             var firestoreDbBuilder = new FirestoreDbBuilder
             {
                 ProjectId = ProjectId,
-                EmulatorDetection = EmulatorDetection.EmulatorOrProduction
+                EmulatorDetection = EmulatorDetection.EmulatorOnly
             };
             
             serviceCollection.TryAddSingleton(firestoreDbBuilder.Build());

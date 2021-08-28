@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Project.Track.Persistence;
 using Project.Track.Persistence.Entities;
 using Project.Track.Server.Branches.Commands;
+using Project.Track.Server.Branches.Models;
 
 namespace Project.Track.Server.Branches.Handlers
 {
@@ -21,7 +22,7 @@ namespace Project.Track.Server.Branches.Handlers
         public async Task<string> Handle(CreateBranch request, CancellationToken cancellationToken)
         {
             var branchEntity = request.GetBranchModel
-                .ToBranch(request.ParentBranch, request.SolutionId, request.IsDefaultBranch);
+                .ToEntity(request.ParentBranch, request.SolutionId, request.IsDefaultBranch);
             
             return await _branches.SaveAsync(branchEntity, cancellationToken);;
         }

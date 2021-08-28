@@ -1,6 +1,7 @@
 ﻿using System;
 using MediatR;
 using Project.Track.Server.Branches.Models;
+using Project.Track.Shared.Branches;
 
 namespace Project.Track.Server.Branches.Commands
 {
@@ -21,7 +22,7 @@ namespace Project.Track.Server.Branches.Commands
 
         public static CreateBranch CreateDefaultBranch(string solutionId)
         {
-            var branch = new BranchModel("main");
+            var branch = new BranchModel{Name = "main"};
             return new(branch, solutionId, null, true);
         }
     }

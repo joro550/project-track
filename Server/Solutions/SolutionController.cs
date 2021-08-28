@@ -1,12 +1,12 @@
-﻿using System;
-using MediatR;
+﻿using MediatR;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Project.Track.Persistence;
 using Project.Track.Persistence.Entities;
 using Project.Track.Server.Solutions.Commands;
-using Project.Track.Server.Solutions.Models;
+using Project.Track.Server.Solutions.Extensions;
+using Project.Track.Shared.Solutions;
 
 namespace Project.Track.Server.Solutions
 {
@@ -35,15 +35,14 @@ namespace Project.Track.Server.Solutions
                 return NotFound();
             
             var firstSolution = solution.First();
-            var getSolutionModel = GetSolutionModel.FromEntity(firstSolution);
-            return Ok(getSolutionModel);
+            return Ok(firstSolution.ToModel());
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateAsync([FromBody]SolutionModel getSolutionModel)
         {
             var solutionId = await _mediator.Send(new CreateSolution(getSolutionModel));
-            return Created($"/api/v1/solutions/{solutionId.ToString()}", solutionId);
+            return Created($"/api/v1/solutions/{solutionId}", solutionId);
         }
     }
 }

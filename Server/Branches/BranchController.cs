@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Project.Track.Persistence;
 using Project.Track.Persistence.Entities;
 using Project.Track.Server.Branches.Models;
+using Project.Track.Shared.Branches;
 
 namespace Project.Track.Server.Branches
 {
@@ -21,7 +22,7 @@ namespace Project.Track.Server.Branches
         public async Task<IActionResult> GetAsync(string solutionId)
         {
             var branchEntities = await _branches.GetAsync(parameters: solutionId);
-            return Ok(branchEntities.Select(GetBranchModel.FromEntity));
+            return Ok(branchEntities.Select(e => e.FromEntity()));
         }
 
         [HttpGet("id")]
@@ -32,7 +33,7 @@ namespace Project.Track.Server.Branches
                 return NotFound();
 
             var branchEntity = branch.First();
-            return Ok(GetBranchModel.FromEntity(branchEntity));
+            return Ok(branchEntity.FromEntity());
         }
         
         [HttpPost]
@@ -43,7 +44,7 @@ namespace Project.Track.Server.Branches
             if (defaultBranch is null)
                 return StatusCode(500);
 
-            var branchEntity = getBranchModel.ToBranch(defaultBranch.Id, solutionId);
+            var branchEntity = getBranchModel.ToEntity(defaultBranch.Id, solutionId);
             var branchId = await _branches.SaveAsync(branchEntity);
             return Created($"api/v1/solutions/{solutionId}/branches/{branchId}", branchId);
         }

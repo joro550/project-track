@@ -1,6 +1,5 @@
-﻿using System;
-using MediatR;
-using Project.Track.Server.Solutions.Models;
+﻿using MediatR;
+using Project.Track.Shared.Solutions;
 
 namespace Project.Track.Server.Solutions.Commands
 {
