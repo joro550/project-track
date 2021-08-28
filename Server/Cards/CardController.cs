@@ -10,7 +10,7 @@ using Project.Track.Server.Cards.Models;
 namespace Project.Track.Server.Cards
 {
     [ApiController]
-    [Route("api/v1/solutions/{solutionId:guid}/cards")]
+    [Route("api/v1/solutions/{solutionId}/cards")]
     public class CardController : ControllerBase
     {
         private readonly IRepository<CardEntity> _cards;
@@ -19,16 +19,16 @@ namespace Project.Track.Server.Cards
             => _cards = cards;
 
         [HttpGet]
-        public async Task<IActionResult> GetAsync(Guid solutionId)
+        public async Task<IActionResult> GetAsync(string solutionId)
         {
-            var cardEntities = await _cards.GetAsync();
+            var cardEntities = await _cards.GetAsync(parameters: solutionId);
             return Ok(cardEntities.Select(GetCardModel.FromEntity));
         }
 
-        [HttpGet("id:guid")]
-        public async Task<IActionResult> GetAsync(Guid id, Guid solutionId)
+        [HttpGet("id")]
+        public async Task<IActionResult> GetAsync(string id, string solutionId)
         {
-            var cardEntities = await _cards.GetAsync(id, solutionId.ToString());
+            var cardEntities = await _cards.GetAsync(id, solutionId);
             if (!cardEntities.Any())
                 return NotFound();
 
@@ -37,7 +37,7 @@ namespace Project.Track.Server.Cards
         }
         
         [HttpPost]
-        public async Task<IActionResult> CreateAsync([FromBody]CardModel cardModel, Guid solutionId)
+        public async Task<IActionResult> CreateAsync([FromBody]CardModel cardModel, string solutionId)
         {
             var branchEntity = cardModel.ToEntity(solutionId);
             var cardId = await _cards.SaveAsync(branchEntity);

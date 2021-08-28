@@ -4,7 +4,7 @@ using Project.Track.Server.Solutions.Models;
 
 namespace Project.Track.Server.Solutions.Commands
 {
-    public class CreateSolution : IRequest<Guid>
+    public class CreateSolution : IRequest<string>
     {
         public SolutionModel GetSolutionModel { get; }
 

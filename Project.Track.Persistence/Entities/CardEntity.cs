@@ -1,28 +1,42 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Google.Cloud.Firestore;
 
 namespace Project.Track.Persistence.Entities
 {
+    [FirestoreData]
     public class CardEntity : PersistentObject
     {
-        public Guid SolutionId { get; set; }
-        public Guid? BranchId { get; set; }
-        public Guid? VersionId { get; set; }
+        [FirestoreProperty]
+        public string SolutionId { get; set; }
         
+        [FirestoreProperty]
+        public string? BranchId { get; set; }
+        
+        [FirestoreProperty]
+        public string? VersionId { get; set; }
+        
+        [FirestoreProperty]
         public string Title { get; set; }
+        
+        [FirestoreProperty]
         public string Description { get; set; }
+        
+        [FirestoreProperty]
         public string State { get; set; }
-        public List<Guid> Features { get; set; }
+        
+        [FirestoreProperty]
+        public List<string> Features { get; set; }
             = new();
         
         public override string GetCollectionName(params string[] parameters)
         {
             var solutionId = parameters.First();
-            return $"Solution/{solutionId}/Card";
+            return $"Solutions/{solutionId}/Cards";
         }
 
         public override string GetCollectionName() 
-            => $"Solution/{SolutionId}/Card";
+            =>  GetCollectionName(SolutionId);
     }
 }

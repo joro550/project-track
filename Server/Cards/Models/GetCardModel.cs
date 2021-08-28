@@ -4,8 +4,8 @@ using Project.Track.Persistence.Entities;
 
 namespace Project.Track.Server.Cards.Models
 {
-    public record GetCardModel(Guid Id, string Title, string Description, string State,
-        List<Guid> Features, Guid? BranchId, Guid? VersionId)
+    public record GetCardModel(string Id, string Title, string Description, string State,
+        List<string> Features, string? BranchId, string? VersionId)
     {
         public static GetCardModel FromEntity(CardEntity entity)
         {

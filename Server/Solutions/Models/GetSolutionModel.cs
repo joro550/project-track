@@ -3,7 +3,7 @@ using Project.Track.Persistence.Entities;
 
 namespace Project.Track.Server.Solutions.Models
 {
-    public record GetSolutionModel(Guid Id, string Name) 
+    public record GetSolutionModel(string Id, string Name) 
         : SolutionModel(Name)
     {
         public override SolutionEntity ToEntity() 

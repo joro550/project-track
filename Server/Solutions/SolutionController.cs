@@ -27,8 +27,8 @@ namespace Project.Track.Server.Solutions
         public async Task<IActionResult> GetAsync() 
             => Ok(await _solutions.GetAsync());
 
-        [HttpGet("{id:guid}")]
-        public async Task<IActionResult> GetAsync(Guid id)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetAsync(string id)
         {
             var solution = await _solutions.GetAsync(id);
             if (!solution.Any())

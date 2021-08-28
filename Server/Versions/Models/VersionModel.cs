@@ -6,14 +6,14 @@ namespace Project.Track.Server.Versions.Models
 {
     public record VersionModel(string Name)
     {
-        public VersionEntity ToEntity(Guid solutionId) =>
+        public VersionEntity ToEntity(string solutionId) =>
             new()
             {
                 Name = Name,
                 SolutionId = solutionId
             };
 
-        public CreateVersion ToRequest(Guid solutionId) 
+        public CreateVersion ToRequest(string solutionId) 
             => new(Name, solutionId);
     }
 }

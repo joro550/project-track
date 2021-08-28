@@ -8,7 +8,7 @@ namespace Project.Track.Persistence.Options
         public override void AddServices(IServiceCollection serviceCollection)
         {
             serviceCollection.AddMemoryCache();
-            serviceCollection.AddTransient(typeof(IStorage<>), typeof(InMemoryStorage<>));
+            // serviceCollection.AddTransient(typeof(IStorage<>), typeof(InMemoryStorage<>));
             serviceCollection.AddTransient(typeof(IRepository<>), typeof(Repository<>));
         }
     }

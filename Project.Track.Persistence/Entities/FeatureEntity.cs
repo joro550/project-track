@@ -1,20 +1,25 @@
 ﻿using System;
 using System.Linq;
+using Google.Cloud.Firestore;
 
 namespace Project.Track.Persistence.Entities
 {
+    [FirestoreData]
     public class FeatureEntity : PersistentObject
     {
-        public Guid SolutionId { get; set; }
+        [FirestoreProperty]
+        public string SolutionId { get; set; }
+        
+        [FirestoreProperty]
         public string Name { get; set; }
         
         public override string GetCollectionName(params string[] parameters)
         {
             var solutionId = parameters.First();
-            return $"Solution/{solutionId}/Feature";
+            return $"Solutions/{solutionId}/Features";
         }
 
         public override string GetCollectionName() 
-            => $"Solution/{SolutionId}/Feature";
+            =>  GetCollectionName(SolutionId);
     }
 }

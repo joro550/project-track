@@ -10,7 +10,7 @@ using Project.Track.Server.Branches.Commands;
 namespace Project.Track.Server.Branches.Handlers
 {
     public class BranchHandler :
-        IRequestHandler<CreateBranch, Guid>,
+        IRequestHandler<CreateBranch, string>,
         IRequestHandler<GetDefaultBranch, BranchEntity>
     {
         private readonly IRepository<BranchEntity> _branches;
@@ -18,7 +18,7 @@ namespace Project.Track.Server.Branches.Handlers
         public BranchHandler(IRepository<BranchEntity> branches) 
             => _branches = branches;
 
-        public async Task<Guid> Handle(CreateBranch request, CancellationToken cancellationToken)
+        public async Task<string> Handle(CreateBranch request, CancellationToken cancellationToken)
         {
             var branchEntity = request.GetBranchModel
                 .ToBranch(request.ParentBranch, request.SolutionId, request.IsDefaultBranch);
@@ -28,7 +28,7 @@ namespace Project.Track.Server.Branches.Handlers
 
         public async Task<BranchEntity> Handle(GetDefaultBranch request, CancellationToken cancellationToken)
         {
-            var branch = (await _branches.GetAsync(cancellationToken)).FirstOrDefault(entity => entity.IsDefault);
+            var branch = (await _branches.GetAsync(parameters: request.SolutionId)).FirstOrDefault(entity => entity.IsDefault);
             return branch;
         }
     }

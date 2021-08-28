@@ -5,13 +5,15 @@ namespace Project.Track.Server.Cards.Commands
 {
     public class AssignVersion : INotification
     {
-        public Guid BranchId { get; }
-        public Guid VersionId { get; }
+        public string SolutionId { get; }
+        public string BranchId { get; }
+        public string VersionId { get; }
 
-        public AssignVersion(Guid branchId, Guid versionId)
+        public AssignVersion(string branchId, string versionId, string solutionId)
         {
             BranchId = branchId;
             VersionId = versionId;
+            SolutionId = solutionId;
         }
     }
 }

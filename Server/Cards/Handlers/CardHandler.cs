@@ -18,7 +18,7 @@ namespace Project.Track.Server.Cards.Handlers
 
         public async Task Handle(AssignVersion notification, CancellationToken cancellationToken)
         {
-            var cards = (await _cards.GetAsync(cancellationToken))
+            var cards = (await _cards.GetAsync(parameters: notification.SolutionId))
                 .Where(e => e.BranchId == notification.BranchId)
                 .ToList();
             

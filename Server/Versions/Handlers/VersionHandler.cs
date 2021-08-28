@@ -11,7 +11,7 @@ using Project.Track.Server.Versions.Commands;
 namespace Project.Track.Server.Versions.Handlers
 {
     public class VersionHandler :
-        IRequestHandler<CreateVersion, Guid>
+        IRequestHandler<CreateVersion, string>
     {
         private readonly IMediator _mediator;
         private readonly IRepository<VersionEntity> _versions;
@@ -22,13 +22,13 @@ namespace Project.Track.Server.Versions.Handlers
             _mediator = mediator;
         }
 
-        public async Task<Guid> Handle(CreateVersion request, CancellationToken cancellationToken)
+        public async Task<string> Handle(CreateVersion request, CancellationToken cancellationToken)
         {
             var versionId = await _versions.SaveAsync(new VersionEntity { Name = request.Name, SolutionId = request.SolutionId },
                 cancellationToken);
             
-            var defaultBranchId = await _mediator.Send(new GetDefaultBranch(), cancellationToken);
-            await _mediator.Publish(new AssignVersion(defaultBranchId.Id, versionId), cancellationToken);
+            var defaultBranchId = await _mediator.Send(new GetDefaultBranch(request.SolutionId), cancellationToken);
+            await _mediator.Publish(new AssignVersion(defaultBranchId.Id, versionId, request.SolutionId), cancellationToken);
             return versionId;
         }
     }

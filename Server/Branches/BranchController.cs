@@ -9,7 +9,7 @@ using Project.Track.Server.Branches.Models;
 namespace Project.Track.Server.Branches
 {
     [ApiController]
-    [Route("api/v1/solutions/{solutionId:guid}/branches")]
+    [Route("api/v1/solutions/{solutionId}/branches")]
     public class BranchController : ControllerBase
     {
         private readonly IRepository<BranchEntity> _branches;
@@ -18,16 +18,16 @@ namespace Project.Track.Server.Branches
             => _branches = branches;
 
         [HttpGet]
-        public async Task<IActionResult> GetAsync(Guid solutionId)
+        public async Task<IActionResult> GetAsync(string solutionId)
         {
-            var branchEntities = await _branches.GetAsync();
+            var branchEntities = await _branches.GetAsync(parameters: solutionId);
             return Ok(branchEntities.Select(GetBranchModel.FromEntity));
         }
 
-        [HttpGet("id:guid")]
-        public async Task<IActionResult> GetAsync(Guid id, Guid solutionId)
+        [HttpGet("id")]
+        public async Task<IActionResult> GetAsync(string id, string solutionId)
         {
-            var branch = await _branches.GetAsync(id, solutionId.ToString());
+            var branch = await _branches.GetAsync(id, solutionId);
             if (!branch.Any())
                 return NotFound();
 
@@ -36,9 +36,9 @@ namespace Project.Track.Server.Branches
         }
         
         [HttpPost]
-        public async Task<IActionResult> CreateAsync([FromBody]BranchModel getBranchModel, Guid solutionId)
+        public async Task<IActionResult> CreateAsync([FromBody]BranchModel getBranchModel, string solutionId)
         {
-            var branches = await _branches.GetAsync();
+            var branches = await _branches.GetAsync(parameters: solutionId);
             var defaultBranch = branches.FirstOrDefault(entity => entity.IsDefault);
             if (defaultBranch is null)
                 return StatusCode(500);
@@ -49,9 +49,9 @@ namespace Project.Track.Server.Branches
         }
         
         [HttpDelete("id:guid")]
-        public async Task<IActionResult> CreateAsync(Guid solutionId, Guid id)
+        public async Task<IActionResult> CreateAsync(string solutionId, string id)
         {
-            var branches = await _branches.GetAsync(id);
+            var branches = await _branches.GetAsync(id, solutionId);
             var defaultBranch = branches.FirstOrDefault(entity => entity.IsDefault);
             if (defaultBranch is null)
                 return BadRequest("cannot_delete_default_branch");

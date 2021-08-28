@@ -5,7 +5,7 @@ namespace Project.Track.Server.Branches.Models
 {
     public record BranchModel(string Name)
     {
-        public BranchEntity ToBranch(Guid? requestParentBranch, Guid solutionId, bool requestIsDefaultBranch = false)
+        public BranchEntity ToBranch(string? requestParentBranch, string solutionId, bool requestIsDefaultBranch = false)
             => new()
             {
                 Name = Name, 

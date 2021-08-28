@@ -10,7 +10,7 @@ using Project.Track.Server.Solutions.Commands;
 namespace Project.Track.Server.Solutions.Handlers
 {
     public class SolutionHandler
-        : IRequestHandler<CreateSolution, Guid>
+        : IRequestHandler<CreateSolution, string>
     {
         private readonly IMediator _mediator;
         private readonly IRepository<SolutionEntity> _solutions;
@@ -21,7 +21,7 @@ namespace Project.Track.Server.Solutions.Handlers
             _solutions = solutions;
         }
         
-        public async Task<Guid> Handle(CreateSolution request, CancellationToken cancellationToken)
+        public async Task<string> Handle(CreateSolution request, CancellationToken cancellationToken)
         {
             var solutionId = await _solutions.SaveAsync(request.GetSolutionModel.ToEntity(), cancellationToken);
             await _mediator.Send(CreateBranch.CreateDefaultBranch(solutionId), cancellationToken);

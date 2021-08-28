@@ -1,10 +1,12 @@
-using System;
+using Google.Cloud.Firestore;
 
 namespace Project.Track.Persistence.Entities
 {
+    [FirestoreData]
     public abstract class PersistentObject : IPersistentObject
     {
-        public Guid Id { get; set; }
+        [FirestoreDocumentId]
+        public string Id { get; set; }
 
         public abstract string GetCollectionName(params string[] parameters);
         public abstract string GetCollectionName();

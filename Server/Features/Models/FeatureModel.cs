@@ -5,7 +5,7 @@ namespace Project.Track.Server.Features.Models
 {
     public record FeatureModel(string Name)
     {
-        public FeatureEntity ToEntity(Guid solutionId) =>
+        public FeatureEntity ToEntity(string solutionId) =>
             new()
             {
                 Name = Name, 

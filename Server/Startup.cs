@@ -24,7 +24,7 @@ namespace Project.Track.Server
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddClient(factory => factory.UseInMemoryStore());
+            services.AddClient(factory => factory.UseFirebase("gcloudtest-290917"));
             services.AddControllersWithViews();
             services.AddRazorPages();
             services.AddMediatR(typeof(Startup));

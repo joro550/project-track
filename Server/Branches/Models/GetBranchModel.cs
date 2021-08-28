@@ -3,7 +3,7 @@ using Project.Track.Persistence.Entities;
 
 namespace Project.Track.Server.Branches.Models
 {
-    public record GetBranchModel(Guid Id, Guid SolutionId, string Name, bool IsDefaultBranch, Guid? ParentBranch) 
+    public record GetBranchModel(string Id, string SolutionId, string Name, bool IsDefaultBranch, string? ParentBranch) 
         : BranchModel(Name)
     {
         public static GetBranchModel FromEntity(BranchEntity entity) 

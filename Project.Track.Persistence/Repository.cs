@@ -9,9 +9,9 @@ namespace Project.Track.Persistence
 {
     public interface IRepository<T> where T : IPersistentObject
     {
-        Task<Guid> SaveAsync(T model, CancellationToken cancellationToken = default);
-        Task<List<T>> GetAsync(Guid id, params string[] parameters);
-        Task<List<T>> GetAsync(CancellationToken cancellationToken = default);
+        Task<string> SaveAsync(T model, CancellationToken cancellationToken = default);
+        Task<List<T>> GetAsync(string id, params string[] parameters);
+        Task<List<T>> GetAsync(params string[] parameters);
     }
 
     internal class Repository<T> : IRepository<T> where T : PersistentObject, new()
@@ -21,13 +21,13 @@ namespace Project.Track.Persistence
         public Repository(IStorage<T> storage)
             => _storage = storage;
 
-        public async Task<Guid> SaveAsync(T model, CancellationToken cancellationToken = default)
+        public async Task<string> SaveAsync(T model, CancellationToken cancellationToken = default)
             => await _storage.SaveAsync(model);
 
-        public async Task<List<T>> GetAsync(Guid id, params string[] parameters) 
+        public async Task<List<T>> GetAsync(string id, params string[] parameters) 
             => await _storage.GetAsync(id, parameters);
 
-        public async Task<List<T>> GetAsync(CancellationToken cancellationToken = default)
-            => await _storage.GetAsync();
+        public async Task<List<T>> GetAsync(params string[] parameters)
+            => await _storage.GetAsync(parameters);
     }
 }

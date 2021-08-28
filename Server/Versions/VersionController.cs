@@ -1,5 +1,4 @@
-﻿using System;
-using MediatR;
+﻿using MediatR;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -10,7 +9,7 @@ using Project.Track.Server.Versions.Models;
 namespace Project.Track.Server.Versions
 {
     [ApiController]
-    [Route("api/v1/solutions/{solutionId:guid}/versions")]
+    [Route("api/v1/solutions/{solutionId}/versions")]
     public class VersionController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -23,16 +22,16 @@ namespace Project.Track.Server.Versions
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAsync(Guid solutionId)
+        public async Task<IActionResult> GetAsync(string solutionId)
         {
-            var branchEntities = await _versions.GetAsync();
+            var branchEntities = await _versions.GetAsync(parameters: solutionId);
             return Ok(branchEntities.Select(GetVersionModel.FromEntity));
         }
         
-        [HttpGet("id:guid")]
-        public async Task<IActionResult> GetAsync(Guid id, Guid solutionId)
+        [HttpGet("id")]
+        public async Task<IActionResult> GetAsync(string id, string solutionId)
         {
-            var versions = await _versions.GetAsync(id, solutionId.ToString());
+            var versions = await _versions.GetAsync(id, solutionId);
             if (!versions.Any())
                 return NotFound();
 
@@ -41,7 +40,7 @@ namespace Project.Track.Server.Versions
         }
         
         [HttpPost]
-        public async Task<IActionResult> CreateAsync([FromBody]VersionModel featureModel, Guid solutionId)
+        public async Task<IActionResult> CreateAsync([FromBody]VersionModel featureModel, string solutionId)
         {
             var versionId = await _mediator.Send(featureModel.ToRequest(solutionId));
             return Created($"api/v1/solutions/{solutionId}/versions/{versionId}", versionId);
