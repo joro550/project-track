@@ -1,6 +1,10 @@
-﻿namespace Project.Track.Shared.Features
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Project.Track.Shared.Features
 {
-    public record FeatureModel(string Name)
+    public class FeatureModel
     {
+        [Required]
+        public string Name { get; set; }
     }
 }

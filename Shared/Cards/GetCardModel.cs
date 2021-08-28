@@ -2,8 +2,15 @@
 
 namespace Project.Track.Shared.Cards
 {
-    public record GetCardModel(string Id, string Title, string Description, string State,
-        List<string> Features, string? BranchId, string? VersionId)
+    public class GetCardModel
     {
+        public string Id { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public string State { get; set; }
+        public List<string> Features { get; set; }
+            = new();
+        public string? BranchId { get; set; }
+        public string VersionId { get; set; }
     }
 }

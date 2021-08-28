@@ -2,9 +2,6 @@
 @using Project.Track.Shared.Solutions
 @inject HttpClient _httpClient;
 
-SolutionId - @SolutionId
-
-
 <h3>Solution - @_solutionModel.Name</h3>
 <hr />
 
@@ -12,6 +9,7 @@ SolutionId - @SolutionId
 <hr />
 
 <VersionList SolutionId='@SolutionId' />
+
 @code {
     [Parameter]
     public string SolutionId { get; set; }

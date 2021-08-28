@@ -1,10 +1,10 @@
-﻿@page "/solutions/{SolutionId}/branches/add"
-@using Project.Track.Shared.Branches
+﻿@page "/solutions/{SolutionId}/component/add"
+@using Project.Track.Shared.Components
 
 @inject HttpClient _httpClient;
 @inject NavigationManager _navigationManager;
 
-<h3>Add Branch</h3>
+<h3>Add Component</h3>
 <hr/>
 
 <EditForm Model="@_model" OnValidSubmit="@HandleValidSubmit" class='form'>
@@ -24,11 +24,11 @@
     [Parameter]
     public string SolutionId { get; set; }
     
-    readonly BranchModel _model = new();
+    readonly ComponentModel _model = new();
     
     private async Task HandleValidSubmit()
     {
-        var response = await _httpClient.PostAsJsonAsync($"/api/v1/solutions/{SolutionId}/branches", _model);
+        var response = await _httpClient.PostAsJsonAsync($"/api/v1/solutions/{SolutionId}/components", _model);
         if(response.IsSuccessStatusCode)
             _navigationManager.NavigateTo($"/solutions/{SolutionId}");
     }

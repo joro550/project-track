@@ -1,6 +1,11 @@
-﻿namespace Project.Track.Shared.Versions
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Project.Track.Shared.Versions
 {
-    public record VersionModel(string Name)
+    public class VersionModel
     {
+        
+        [Required]
+        public string Name { get; set; }
     }
 }

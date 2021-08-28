@@ -6,8 +6,16 @@ namespace Project.Track.Server.Cards.Models
     public static class CardExtensions
     {
         public static GetCardModel ToModel(this CardEntity entity)
-            => new(entity.Id, entity.Title, entity.Description, entity.State, entity.Features, entity.BranchId,
-                entity.VersionId);
+            => new()
+            {
+                Id = entity.Id,
+                Description = entity.Description,
+                Features = entity.Features,
+                State = entity.State,
+                Title = entity.Title,
+                VersionId = entity.VersionId,
+                BranchId = entity.BranchId
+            };
 
         public static CardEntity ToEntity(this CardModel card, string solutionId)
         {

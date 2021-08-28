@@ -1,10 +1,10 @@
-﻿@page "/solutions/{SolutionId}/branches/add"
-@using Project.Track.Shared.Branches
+﻿@page "/solutions/{SolutionId}/versions/create"
+@using Project.Track.Shared.Versions
 
 @inject HttpClient _httpClient;
 @inject NavigationManager _navigationManager;
 
-<h3>Add Branch</h3>
+<h3>Create versions</h3>
 <hr/>
 
 <EditForm Model="@_model" OnValidSubmit="@HandleValidSubmit" class='form'>
@@ -19,12 +19,11 @@
     <button  class="btn btn-primary" type="submit">Submit</button>
 </EditForm>
 
-
 @code {
     [Parameter]
     public string SolutionId { get; set; }
-    
-    readonly BranchModel _model = new();
+
+    private readonly VersionModel _model = new();
     
     private async Task HandleValidSubmit()
     {
