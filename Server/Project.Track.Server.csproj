@@ -17,8 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Components\Commands" />
-    <Folder Include="Components\Handlers" />
     <Folder Include="Features\Commands" />
     <Folder Include="Features\Handlers" />
   </ItemGroup>

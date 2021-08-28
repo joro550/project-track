@@ -3,7 +3,7 @@ using Project.Track.Persistence.Entities;
 
 namespace Project.Track.Server.Components.Models
 {
-    public record GetComponentModel(Guid Id, Guid SolutionId, string Name)
+    public record GetComponentModel(string Id, string SolutionId, string Name)
     {
         public static GetComponentModel FromEntity(ComponentEntity entity) 
             => new(entity.Id, entity.SolutionId, entity.Name);
@@ -11,7 +11,7 @@ namespace Project.Track.Server.Components.Models
 
     public record ComponentModel(string Name)
     {
-        public ComponentEntity ToEntity(Guid solutionId)
+        public ComponentEntity ToEntity(string solutionId)
         {
             return new()
             {

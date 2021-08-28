@@ -9,7 +9,7 @@ using Project.Track.Server.Components.Models;
 namespace Project.Track.Server.Components
 {
     [ApiController]
-    [Route("api/v1/solutions/{solutionId:guid}/components")]
+    [Route("api/v1/solutions/{solutionId}/components")]
     public class ComponentController : ControllerBase
     {
         private readonly IRepository<ComponentEntity> _components;
@@ -18,16 +18,16 @@ namespace Project.Track.Server.Components
             => _components = components;
 
         [HttpGet]
-        public async Task<IActionResult> GetAsync(Guid solutionId)
+        public async Task<IActionResult> GetAsync(string solutionId)
         {
-            var componentEntities = await _components.GetAsync();
+            var componentEntities = await _components.GetAsync(parameters: solutionId);
             return Ok(componentEntities.Select(GetComponentModel.FromEntity));
         }
         
-        [HttpGet("id:guid")]
-        public async Task<IActionResult> GetAsync(Guid id, Guid solutionId)
+        [HttpGet("id")]
+        public async Task<IActionResult> GetAsync(string id, string solutionId)
         {
-            var componentEntities = await _components.GetAsync(id, solutionId.ToString());
+            var componentEntities = await _components.GetAsync(id, solutionId);
             if (!componentEntities.Any())
                 return NotFound();
 
@@ -36,7 +36,7 @@ namespace Project.Track.Server.Components
         }
         
         [HttpPost]
-        public async Task<IActionResult> CreateAsync([FromBody]ComponentModel cardModel, Guid solutionId)
+        public async Task<IActionResult> CreateAsync([FromBody]ComponentModel cardModel, string solutionId)
         {
             var componentEntity = cardModel.ToEntity(solutionId);
             var componentId = await _components.SaveAsync(componentEntity);

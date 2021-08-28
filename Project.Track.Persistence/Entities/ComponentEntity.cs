@@ -5,16 +5,16 @@ namespace Project.Track.Persistence.Entities
 {
     public class ComponentEntity : PersistentObject
     {
-        public Guid SolutionId { get; set; }
+        public string SolutionId { get; set; }
         public string Name { get; set; }
         
         public override string GetCollectionName(params string[] parameters)
         {
             var solutionId = parameters.First();
-            return $"Solution/{solutionId}/Component";
+            return $"Solutions/{solutionId}/Component";
         }
 
-        public override string GetCollectionName() 
-            => $"Solution/{SolutionId}/Component";
+        public override string GetCollectionName()
+            => GetCollectionName(SolutionId);
     }
 }
