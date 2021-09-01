@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Linq;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Project.Track.Persistence;
 
 namespace Project.Track.Server
@@ -24,7 +25,22 @@ namespace Project.Track.Server
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddClient(factory => factory.UseFirebase("gcloudtest-290917"));
+            services.AddAuthentication(options =>
+                {
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(options =>
+                {
+                    options.Authority = Configuration["Auth0:Authority"];
+                    options.Audience = Configuration["Auth0:ApiIdentifier"];
+                });
+            
+            
+            
+            
+            // services.AddClient(factory => factory.UseFirebase("gcloudtest-290917"));
+            services.AddClient(c => c.UseInMemoryStore());
             services.AddControllersWithViews();
             services.AddRazorPages();
             services.AddMediatR(typeof(Startup));
@@ -49,7 +65,8 @@ namespace Project.Track.Server
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseAuthentication();  
+            app.UseAuthorization();   
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
