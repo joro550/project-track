@@ -1,18 +1,19 @@
-﻿using System;
+﻿using MediatR;
 using System.Linq;
-using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 using Project.Track.Persistence;
+using Project.Track.Shared.Branches;
 using Project.Track.Persistence.Entities;
-using Project.Track.Server.Branches.Commands;
 using Project.Track.Server.Branches.Models;
+using Project.Track.Server.Branches.Commands;
 
 namespace Project.Track.Server.Branches.Handlers
 {
     public class BranchHandler :
         IRequestHandler<CreateBranch, string>,
-        IRequestHandler<GetDefaultBranch, BranchEntity>
+        IRequestHandler<GetDefaultBranch, BranchEntity>,
+        IRequestHandler<GetBranchById, GetBranchModel?>
     {
         private readonly IRepository<BranchEntity> _branches;
 
@@ -27,10 +28,16 @@ namespace Project.Track.Server.Branches.Handlers
             return await _branches.SaveAsync(branchEntity, cancellationToken);;
         }
 
-        public async Task<BranchEntity> Handle(GetDefaultBranch request, CancellationToken cancellationToken)
+        public async Task<BranchEntity?> Handle(GetDefaultBranch request, CancellationToken cancellationToken)
         {
             var branch = (await _branches.GetAsync(parameters: request.SolutionId)).FirstOrDefault(entity => entity.IsDefault);
             return branch;
+        }
+
+        public async Task<GetBranchModel?> Handle(GetBranchById request, CancellationToken cancellationToken)
+        {
+            var branch = (await _branches.GetAsync(request.BranchId, request.SolutionId)).FirstOrDefault();
+            return branch?.FromEntity();
         }
     }
 }

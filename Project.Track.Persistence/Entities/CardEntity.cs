@@ -8,11 +8,17 @@ namespace Project.Track.Persistence.Entities
     [FirestoreData]
     public class CardEntity : PersistentObject
     {
+        public class CardBranch
+        {
+            public string Id { get; set; }
+            public string Name { get; set; }
+        }
+        
         [FirestoreProperty]
         public string SolutionId { get; set; }
         
         [FirestoreProperty]
-        public string? BranchId { get; set; }
+        public CardBranch? Branch { get; set; }
         
         [FirestoreProperty]
         public string? VersionId { get; set; }
