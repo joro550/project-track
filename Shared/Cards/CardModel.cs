@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Project.Track.Shared.Cards
 {
     public class CardModel
     {
+        [Required]
         public string Title { get; set; }
         
         public string Description { get; set; }

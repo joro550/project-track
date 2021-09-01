@@ -9,19 +9,19 @@
 <h3>Add Component</h3>
 <hr/>
 
-<EditForm Model="@_model" OnValidSubmit="@HandleValidSubmit" class='form'>
+<EditForm Model='@_model' OnValidSubmit='@HandleValidSubmit' class='form'>
     <DataAnnotationsValidator />
     <ValidationSummary />
 
-    <div class="mb-3">
-        <label for="name" class="form-label">Name</label>
-        <InputText id="name" class="form-control" @bind-Value="_model.Name" />
+    <div class='mb-3'>
+        <label for='name' class='form-label'>Name</label>
+        <InputText id='name' class='form-control' @bind-Value='_model.Name' />
     </div>
     
-    <div class="mb-3">
-        <label for="feature" class="form-label">Feature</label>
+    <div class='mb-3'>
+        <label class='form-label'>Feature</label>
         
-        <InputSelect class="form-select"  @bind-Value='_model.FeatureId'>
+        <InputSelect class='form-select'  @bind-Value='_model.FeatureId'>
             @if (_features.Any())
             {
                 foreach (var (id, name, _) in _features)
@@ -32,7 +32,7 @@
         </InputSelect>
     </div>
 
-    <button  class="btn btn-primary" type="submit">Submit</button>
+    <button  class='btn btn-primary' type='submit'>Submit</button>
 </EditForm>
 
 
